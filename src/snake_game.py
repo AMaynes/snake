@@ -23,13 +23,12 @@ Point = namedtuple('Point', 'x, y')
 def manhattan(a, b):  # a, b are Points
         return abs(a.x - b.x) + abs(a.y - b.y)
 
-BASE_TURN_PENALTY = -2
+BASE_TURN_PENALTY = -1
 TAIL_PROXIMITY_PENALTY = -0.5 # multiplies by num of tail segments getting closer
-BASE_MOVEMENT_PENALTY = -1
-FOOD_REWARD = 20
+FOOD_REWARD = 30
 FOOD_PROXIMITY_REWARD = 1
 FOOD_PROXIMITY_PENALTY = -2
-DEATH_PENALTY = -100
+DEATH_PENALTY = -1000
 
 class SnakeGameAI:
     """
@@ -95,7 +94,10 @@ class SnakeGameAI:
 
         if not np.array_equal(action, [1, 0, 0]): # If it's a turn
             self.consecutive_turns += 1
-            reward = BASE_TURN_PENALTY * self.consecutive_turns
+            if(self.consecutive_turns == 2 and self.score > 15):
+                reward = abs(BASE_TURN_PENALTY) * self.consecutive_turns * 1.1
+            else:
+                reward = BASE_TURN_PENALTY * self.consecutive_turns
         else: # If it moves straight
             self.consecutive_turns = 0
 
@@ -117,7 +119,7 @@ class SnakeGameAI:
 
         if self.head == self.food:
             self.score += 1
-            reward = FOOD_REWARD
+            reward = FOOD_REWARD * (15/self.score)
             self._place_food()
             self.distance_to_food = manhattan(self.head, self.food)
             if self.score > self.viewer_best:

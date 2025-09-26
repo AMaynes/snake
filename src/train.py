@@ -9,7 +9,7 @@ from constants import *
 import numpy as np
 import tensorflow as tf
 
-NUM_HEADLESS = 20          # number of extra envs (start with 4–16)
+NUM_HEADLESS = 10          # number of extra envs (start with 4–16)
 SAVE_EVERY_GAMES = 100    # your existing cadence
 MODEL_PATH = "./model/model.keras"
 GAMES_COUNT_PATH = "./model/games_count.txt"
